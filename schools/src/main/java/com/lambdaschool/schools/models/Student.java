@@ -2,14 +2,8 @@ package com.lambdaschool.schools.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,7 +13,7 @@ import java.util.List;
 @Entity
 @Table(name = "students")
 public class Student
-    extends Auditable
+        extends Auditable
 {
     /**
      * The primary key (long) of the students table
@@ -32,7 +26,8 @@ public class Student
      * The name student (String)
      */
     @Column(nullable = false,
-        unique = true)
+            unique = true)
+    @Size(min = 2, max = 30, message = "Student name must be 2 - 30 characters.")
     private String name;
 
     /**
@@ -40,9 +35,9 @@ public class Student
      * connects students to the student course combination
      */
     @OneToMany(mappedBy = "student",
-        cascade = CascadeType.ALL)
+            cascade = CascadeType.ALL)
     @JsonIgnoreProperties(value = "student",
-        allowSetters = true)
+            allowSetters = true)
     private List<StudCourses> courses = new ArrayList<>();
 
     /**
